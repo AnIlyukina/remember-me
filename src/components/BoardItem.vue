@@ -1,5 +1,5 @@
 <template>
-  <div :class="getBoardItemClasses" @click="select(field.id)">{{field.clicked}}</div>
+  <div :class="getBoardItemClasses" @click="select(field.id)"></div>
 </template>
 
 <script>

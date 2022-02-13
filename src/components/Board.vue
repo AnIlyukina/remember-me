@@ -7,8 +7,8 @@
         @selectField = 'selectField($event)'
     />
     <p class="board__difficult">Сложность: <strong>{{ difficult }}</strong></p>
-    <p v-if = "isWin" class="board__win"> Давай давай продолжай </p>
-    <p v-if ='isFail' class="board__fail"> Ничего страшного нажми на старт и будет репит </p>
+    <!-- <p v-if = "isWin" class="board__win"> Давай давай продолжай </p>
+    <p v-if ='isFail' class="board__fail"> Ничего страшного нажми на старт и будет репит </p> -->
 
     <button class="board__button" @click="onStart" :disabled = '!canStartGame'>Старт</button>
   </div>

@@ -3,9 +3,6 @@
     <BoardItem v-for="field in fields" :field ="field" :key="'field-' + field.id"/>
     <p class="board__difficult">Сложность: <strong>{{ difficult }}</strong></p>
     <button class="board__button" @click="onStart">Старт</button>
-    <button>ddf
-<button class="board__button" @click="onStart">Старт</button>
-    </button>
   </div>
   
 </template>

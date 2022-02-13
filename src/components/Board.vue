@@ -1,16 +1,28 @@
 <template>
   <div class="board">
-    <BoardItem v-for="field in fields" :field ="field" :key="'field-' + field.id"/>
+    <BoardItem
+        :game-status ='gameStatus'
+        v-for="field in fields" :field ="field"
+        :key="'field-' + field.id"
+        @selectField = 'selectField($event)'
+    />
     <p class="board__difficult">Сложность: <strong>{{ difficult }}</strong></p>
-    <button class="board__button" @click="onStart">Старт</button>
+    <p v-if = "isWin" class="board__win"> Давай давай продолжай </p>
+    <p v-if ='isFail' class="board__fail"> Ничего страшного нажми на старт и будет репит </p>
+
+    <button class="board__button" @click="onStart" :disabled = '!canStartGame'>Старт</button>
   </div>
-  
+
 </template>
 
 <script>
 
+import {ref} from "vue";
 import BoardItem from './BoardItem.vue'
-import {ref, onBeforeMount} from 'vue'
+import useGameInit from "@/components/composables/useGameInit";
+import useGameStart from "@/components/composables/useGameStart";
+import useGameProcess from "@/components/composables/useGameProcess";
+import {GAME_STATUS} from "@/constants";
 
 export default {
   name:'Board',
@@ -19,57 +31,30 @@ export default {
     BoardItem
   },
   setup(){
-    let difficult = ref(3)
-    let fields = ref([])
-
+    const gameStatus = ref(GAME_STATUS.NONE)
     const number = 25
 
-    const init = () => {
+    const { difficult, fields,init} = useGameInit(number)
+    const { onStart, canStartGame } = useGameStart(init, difficult, fields,number, gameStatus)
+    const { selectField, isWin, isFail} = useGameProcess(fields, gameStatus, difficult, onStart )
 
-      fields.value = []
-
-      for (let i = 0; i< number; i++){
-
-      fields.value.push({
-        id: i,
-        clicked:false,
-        value:0
-       })
-      }
-    }
-
-  
-
-    onBeforeMount(init)
 
     return {
       difficult,
       fields,
       number,
-      init
+      init,
+      onStart,
+      gameStatus,
+      canStartGame,
+      selectField,
+      isWin,
+      isFail
     }
 
   },
   methods:{
-    onStart(){
-      console.log('hvjhs')
-      this.init();
-      this.prepareGame()
-    },
-    prepareGame(){
-      for( let i = 0; i < this.difficult; i++){
-        const index = this.getRandom(0, this.number - 1);
 
-        if(this.fields[index].value !== 1){
-          this.fields[index].value = 1
-        } else{
-          i--;
-        }
-      }
-    },
-    getRandom(min,max){
-      return Math.floor(Math.random()*(max - min))+min
-    }
   }
 }
 </script>
@@ -83,7 +68,7 @@ export default {
 }
 
 .board__difficult{
-
   margin: 0 0 10px 0;
 }
+
 </style>

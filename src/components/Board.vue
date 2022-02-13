@@ -4,7 +4,7 @@
     <p class="board__difficult">Сложность: <strong>{{ difficult }}</strong></p>
     <button class="board__button" @click="onStart">Старт</button>
     <button>ddf
-
+<button class="board__button" @click="onStart">Старт</button>
     </button>
   </div>
   
